@@ -11,6 +11,7 @@ export interface TasksRepository extends Repository<Task> {
   this: Repository<Task>;
   getTaskById(id: string): Promise<Task>;
   createTask(createTaskDto: CreateTaskDto): Promise<Task>;
+  updateTaskStatus(task: Task): Promise<Task>;
   deleteTask(id: string): Promise<DeleteResult>;
 }
 
@@ -29,6 +30,10 @@ export const customTasksRepository: Pick<TasksRepository, any> = {
 
     this.save(task);
     return task;
+  },
+
+  updateTaskStatus(this: Repository<Task>, task: Task) {
+    return this.save(task);
   },
 
   // delete is better choice than remove
