@@ -5,6 +5,7 @@ import {
   ConflictException,
   InternalServerErrorException,
 } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 
 // Creating and Using Custom Repositories in NestJS with TypeORM 0.3
 // https://tech.durgadas.in/creating-and-using-custom-repositories-in-nestjs-with-typeorm-0-3-c7ac9548ad99
@@ -21,7 +22,11 @@ export const customUsersRepository: Pick<UsersRepository, any> = {
     authCredentialsDto: AuthCredentialsDto,
   ) {
     const { username, password } = authCredentialsDto;
-    const user = this.create({ username, password });
+
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = this.create({ username, password: hashedPassword });
     try {
       await this.save(user);
     } catch (error) {
