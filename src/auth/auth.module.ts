@@ -9,9 +9,20 @@ import {
 } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { customUsersRepository } from './users.repository';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.register({
+      secret: 'topSecret123',
+      signOptions: {
+        expiresIn: 3600,
+      },
+    }),
+    TypeOrmModule.forFeature([User]),
+  ],
   controllers: [AuthController],
   providers: [
     AuthService,
