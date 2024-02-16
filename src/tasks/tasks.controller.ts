@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { Task } from './tasks.model';
+import { Task } from './task.model';
 import { GetTasksFilterDto } from './dto/get-tasks-filter';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 
