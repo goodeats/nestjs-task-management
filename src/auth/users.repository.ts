@@ -13,10 +13,15 @@ import * as bcrypt from 'bcrypt';
 
 export interface UsersRepository extends Repository<User> {
   this: Repository<User>;
+  getUserByUsername(username: string): Promise<User>;
   createUser(authCredentialsDto: AuthCredentialsDto): Promise<void>;
 }
 
 export const customUsersRepository: Pick<UsersRepository, any> = {
+  getUserByUsername(this: Repository<User>, username: string) {
+    return this.findOne({ where: { username } });
+  },
+
   async createUser(
     this: Repository<User>,
     authCredentialsDto: AuthCredentialsDto,
