@@ -3,6 +3,7 @@ import { Task } from './task.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskStatus } from './task-status.enum';
 import { GetTasksFilterDto } from './dto/get-tasks-filter';
+import { User } from 'src/auth/user.entity';
 
 // Creating and Using Custom Repositories in NestJS with TypeORM 0.3
 // https://tech.durgadas.in/creating-and-using-custom-repositories-in-nestjs-with-typeorm-0-3-c7ac9548ad99
@@ -12,7 +13,7 @@ export interface TasksRepository extends Repository<Task> {
   this: Repository<Task>;
   getTasks(filterDto: GetTasksFilterDto): Promise<Task[]>;
   getTaskById(id: string): Promise<Task>;
-  createTask(createTaskDto: CreateTaskDto): Promise<Task>;
+  createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task>;
   updateTaskStatus(task: Task): Promise<Task>;
   deleteTask(id: string): Promise<DeleteResult>;
 }
@@ -40,12 +41,13 @@ export const customTasksRepository: Pick<TasksRepository, any> = {
     return this.findOne({ where: { id } });
   },
 
-  createTask(this: Repository<Task>, createTaskDto: CreateTaskDto) {
+  createTask(this: Repository<Task>, createTaskDto: CreateTaskDto, user: User) {
     const { title, description } = createTaskDto;
     const task = this.create({
       title,
       description,
       status: TaskStatus.OPEN,
+      user,
     });
 
     this.save(task);
