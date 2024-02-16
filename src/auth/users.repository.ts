@@ -1,6 +1,10 @@
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import {
+  ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 // Creating and Using Custom Repositories in NestJS with TypeORM 0.3
 // https://tech.durgadas.in/creating-and-using-custom-repositories-in-nestjs-with-typeorm-0-3-c7ac9548ad99
@@ -12,9 +16,21 @@ export interface UsersRepository extends Repository<User> {
 }
 
 export const customUsersRepository: Pick<UsersRepository, any> = {
-  createUser(this: Repository<User>, authCredentialsDto: AuthCredentialsDto) {
+  async createUser(
+    this: Repository<User>,
+    authCredentialsDto: AuthCredentialsDto,
+  ) {
     const { username, password } = authCredentialsDto;
     const user = this.create({ username, password });
-    this.save(user);
+    try {
+      await this.save(user);
+    } catch (error) {
+      const duplicateUsername = error.code === '23505';
+      if (duplicateUsername) {
+        throw new ConflictException('Username already exists');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
   },
 };
