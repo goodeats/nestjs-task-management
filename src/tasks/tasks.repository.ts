@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { Task } from './task.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskStatus } from './task-status.enum';
@@ -11,6 +11,7 @@ export interface TasksRepository extends Repository<Task> {
   this: Repository<Task>;
   getTaskById(id: string): Promise<Task>;
   createTask(createTaskDto: CreateTaskDto): Promise<Task>;
+  deleteTask(id: string): Promise<DeleteResult>;
 }
 
 export const customTasksRepository: Pick<TasksRepository, any> = {
@@ -28,5 +29,12 @@ export const customTasksRepository: Pick<TasksRepository, any> = {
 
     this.save(task);
     return task;
+  },
+
+  // delete is better choice than remove
+  // fewer queries to the database
+  // check for affected count in result
+  deleteTask(this: Repository<Task>, id: string) {
+    return this.delete(id);
   },
 };
