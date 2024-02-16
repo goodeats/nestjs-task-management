@@ -11,7 +11,7 @@ import { User } from 'src/auth/user.entity';
 
 export interface TasksRepository extends Repository<Task> {
   this: Repository<Task>;
-  getTasks(filterDto: GetTasksFilterDto): Promise<Task[]>;
+  getTasks(filterDto: GetTasksFilterDto, user: User): Promise<Task[]>;
   getTaskById(id: string): Promise<Task>;
   createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task>;
   updateTaskStatus(task: Task): Promise<Task>;
@@ -19,9 +19,10 @@ export interface TasksRepository extends Repository<Task> {
 }
 
 export const customTasksRepository: Pick<TasksRepository, any> = {
-  getTasks(this: Repository<Task>, filterDto: GetTasksFilterDto) {
+  getTasks(this: Repository<Task>, filterDto: GetTasksFilterDto, user: User) {
     const { status, search } = filterDto;
     const query = this.createQueryBuilder('task'); // very cool
+    query.where({ user });
 
     if (status) {
       query.andWhere('task.status = :status', { status }); // to be able to do this
