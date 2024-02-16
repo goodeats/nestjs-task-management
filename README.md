@@ -1,7 +1,28 @@
-# [Udemy Course](https://www.udemy.com/course/nestjs-zero-to-hero/)
+# NestJS Tutorial
 
-[Section Code (2)](https://github.com/arielweinberger/nestjs-course-task-management/tree/s1-task-management-app)
-[Section Code (3)](https://github.com/arielweinberger/nestjs-course-task-management/tree/s2-validation-and-error-handling)
+- [Udemy Course](https://www.udemy.com/course/nestjs-zero-to-hero/)
+- [Udemy Course Repo](https://github.com/arielweinberger/nestjs-course-task-management)
+
+Takeaways:
+
+- This is my first time trying NestJS and I like it!
+- I like TypeScript for enforcing code quality and maintainability as projects grow, very cool to add a new way to build an API to my skills
+- The framework architecture is scalable and seems easy to understand as a dev who has primarily worked with Ruby on Rails on the backend
+- Controller -> Service -> Repository is pretty straightforward
+- If you're building a REST API this is clearly a solid way to organize it
+- I'm glad this tutorial went through setting up auth since that is vital to any real-world application, JWT is good for distributed systems and mobile apps
+- I've used Prisma as an ORM before, I like TypeORM too for having a pretty robust API that makes a lot of common query and mutation types simple to implement
+- The tutorial is about 3 years old and the `@EntityRepository` decorator has been deprecated since then, but I was able to find an article that helped me find the current way to make a custom repository
+- I feel like I can jump in on any NestJS project now
+
+TODO:
+
+- I stopped right before Section 8 so I want to explore those as well
+- I am going to try to build a new demo that has some more real-world entity structure on my own just to see if I got the hang of this
+
+Below is the standard boilerplate readme for creating a NestJS app:
+
+---
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
