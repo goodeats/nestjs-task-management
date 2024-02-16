@@ -41,7 +41,11 @@ export const customTasksRepository: Pick<TasksRepository, any> = {
     return this.findOne({ where: { id } });
   },
 
-  createTask(this: Repository<Task>, createTaskDto: CreateTaskDto, user: User) {
+  async createTask(
+    this: Repository<Task>,
+    createTaskDto: CreateTaskDto,
+    user: User,
+  ) {
     const { title, description } = createTaskDto;
     const task = this.create({
       title,
@@ -50,18 +54,18 @@ export const customTasksRepository: Pick<TasksRepository, any> = {
       user,
     });
 
-    this.save(task);
+    await this.save(task);
     return task;
   },
 
-  updateTaskStatus(this: Repository<Task>, task: Task) {
-    return this.save(task);
+  async updateTaskStatus(this: Repository<Task>, task: Task) {
+    return await this.save(task);
   },
 
   // delete is better choice than remove
   // fewer queries to the database
   // check for affected count in result
-  deleteTask(this: Repository<Task>, id: string) {
-    return this.delete(id);
+  async deleteTask(this: Repository<Task>, id: string) {
+    return await this.delete(id);
   },
 };
