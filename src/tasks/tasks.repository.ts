@@ -29,8 +29,9 @@ export const customTasksRepository: Pick<TasksRepository, any> = {
     }
 
     if (search) {
+      // wrap in parens to avoid precedence issues
       query.andWhere(
-        'LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search)',
+        '(LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search))',
         { search: `%${search}%` },
       ); // and this
     }
