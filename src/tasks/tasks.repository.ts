@@ -15,7 +15,7 @@ export interface TasksRepository extends Repository<Task> {
   getTaskById(id: string, user: User): Promise<Task>;
   createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task>;
   updateTaskStatus(task: Task): Promise<Task>;
-  deleteTask(id: string): Promise<DeleteResult>;
+  deleteTask(id: string, user: User): Promise<DeleteResult>;
 }
 
 export const customTasksRepository: Pick<TasksRepository, any> = {
@@ -66,7 +66,7 @@ export const customTasksRepository: Pick<TasksRepository, any> = {
   // delete is better choice than remove
   // fewer queries to the database
   // check for affected count in result
-  async deleteTask(this: Repository<Task>, id: string) {
-    return await this.delete(id);
+  async deleteTask(this: Repository<Task>, id: string, user: User) {
+    return await this.delete({ id, user });
   },
 };
