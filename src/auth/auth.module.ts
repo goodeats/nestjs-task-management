@@ -11,6 +11,7 @@ import { DataSource } from 'typeorm';
 import { customUsersRepository } from './users.repository';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { JwtModule } from '@nestjs/jwt';
   controllers: [AuthController],
   providers: [
     AuthService,
+    JwtStrategy,
     {
       provide: getRepositoryToken(User),
       inject: [getDataSourceToken()],
@@ -33,5 +35,6 @@ import { JwtModule } from '@nestjs/jwt';
         dataSource.getRepository(User).extend(customUsersRepository),
     },
   ],
+  exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}
