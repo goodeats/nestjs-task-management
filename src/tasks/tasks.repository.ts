@@ -12,7 +12,7 @@ import { User } from 'src/auth/user.entity';
 export interface TasksRepository extends Repository<Task> {
   this: Repository<Task>;
   getTasks(filterDto: GetTasksFilterDto, user: User): Promise<Task[]>;
-  getTaskById(id: string): Promise<Task>;
+  getTaskById(id: string, user: User): Promise<Task>;
   createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task>;
   updateTaskStatus(task: Task): Promise<Task>;
   deleteTask(id: string): Promise<DeleteResult>;
@@ -39,8 +39,8 @@ export const customTasksRepository: Pick<TasksRepository, any> = {
     return query.getMany(); // sql is easy
   },
 
-  getTaskById(this: Repository<Task>, id: string) {
-    return this.findOne({ where: { id } });
+  getTaskById(this: Repository<Task>, id: string, user: User) {
+    return this.findOne({ where: { id, user } });
   },
 
   async createTask(
