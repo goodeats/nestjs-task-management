@@ -2,11 +2,17 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { User } from './user.entity';
-import { getDataSourceToken, getRepositoryToken } from '@nestjs/typeorm';
+import {
+  TypeOrmModule,
+  getDataSourceToken,
+  getRepositoryToken,
+} from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { customUsersRepository } from './users.repository';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([User])],
+  controllers: [AuthController],
   providers: [
     AuthService,
     {
@@ -16,6 +22,5 @@ import { customUsersRepository } from './users.repository';
         dataSource.getRepository(User).extend(customUsersRepository),
     },
   ],
-  controllers: [AuthController],
 })
 export class AuthModule {}
