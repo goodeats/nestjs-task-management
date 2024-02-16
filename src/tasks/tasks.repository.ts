@@ -54,8 +54,7 @@ export const customTasksRepository: Pick<TasksRepository, any> = {
       user,
     });
 
-    await this.save(task);
-    return task;
+    return await this.save(task);
   },
 
   async updateTaskStatus(this: Repository<Task>, task: Task) {
