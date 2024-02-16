@@ -1,21 +1,15 @@
-import { Repository } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { Task } from './task.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-
-// @EntityRepository(Task)
-// export class TasksRepository extends Repository<Task> {
-//   // ... methods will go here
-// }
-// ^ deprecated, but this works :D
-// https://stackoverflow.com/a/73239250
+import { GenericRepository } from 'src/shared/entity.repository';
 
 @Injectable()
-export class TasksRepository extends Repository<Task> {
+export class TasksRepository extends GenericRepository<Task> {
   constructor(
     @InjectRepository(Task)
-    repository: Repository<Task>,
+    dataSource: DataSource,
   ) {
-    super(repository.target, repository.manager, repository.queryRunner);
+    super(Task, dataSource);
   }
 }
